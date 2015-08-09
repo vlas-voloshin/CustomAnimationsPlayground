@@ -120,7 +120,7 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="faP-D4-SaF"/>
                                 </connections>
                             </tableView>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="UsL-aQ-H88">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="-0.5" maxValue="1.5" translatesAutoresizingMaskIntoConstraints="NO" id="UsL-aQ-H88">
                                 <rect key="frame" x="8" y="166" width="204" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="KyM-GP-a7l"/>
@@ -129,19 +129,19 @@
                                     <action selector="controlPointSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="yWX-iM-Mo0"/>
                                 </connections>
                             </slider>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="cm6-eV-MwK">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="-0.5" maxValue="1.5" translatesAutoresizingMaskIntoConstraints="NO" id="cm6-eV-MwK">
                                 <rect key="frame" x="8" y="204" width="204" height="31"/>
                                 <connections>
                                     <action selector="controlPointSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="ZNT-a0-sfZ"/>
                                 </connections>
                             </slider>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="SlY-VV-TpW">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="-0.5" maxValue="1.5" translatesAutoresizingMaskIntoConstraints="NO" id="SlY-VV-TpW">
                                 <rect key="frame" x="8" y="242" width="204" height="31"/>
                                 <connections>
                                     <action selector="controlPointSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="lKU-HH-hXQ"/>
                                 </connections>
                             </slider>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="k3C-ls-sfj">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="-0.5" maxValue="1.5" translatesAutoresizingMaskIntoConstraints="NO" id="k3C-ls-sfj">
                                 <rect key="frame" x="8" y="280" width="204" height="31"/>
                                 <connections>
                                     <action selector="controlPointSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="0zt-dR-fXL"/>
