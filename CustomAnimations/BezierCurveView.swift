@@ -8,81 +8,91 @@
 
 import UIKit
 
-class BezierCurveView: UIView {
+final class BezierCurveView: UIView {
 
-    private
-    var shapeLayer: CAShapeLayer!
-    var tangentsLayer: CAShapeLayer!
-    
     var function: CAMediaTimingFunction? {
         didSet {
             self.setNeedsLayout()
         }
     }
     
-    var strokeColor = UIColor.blackColor() {
+    var strokeColor = UIColor.black {
         didSet {
-            self.shapeLayer.strokeColor = strokeColor.CGColor
-            self.tangentsLayer.strokeColor = strokeColor.CGColor
+            self.shapeLayer.strokeColor = self.strokeColor.cgColor
+            self.tangentsLayer.strokeColor = self.strokeColor.cgColor
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupLayers()
+        self.commonInit()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupLayers()
+        self.commonInit()
     }
-    
-    func setupLayers() {
-        shapeLayer = CAShapeLayer()
-        shapeLayer.strokeColor = self.strokeColor.CGColor
-        shapeLayer.fillColor = nil
-        shapeLayer.anchorPoint = CGPointZero
-        self.layer.addSublayer(shapeLayer)
-        
-        tangentsLayer = CAShapeLayer()
-        tangentsLayer.strokeColor = self.strokeColor.CGColor
-        tangentsLayer.fillColor = nil
-        tangentsLayer.anchorPoint = CGPointZero
-        tangentsLayer.lineDashPattern = [5, 2]
-        self.layer.addSublayer(tangentsLayer)
-    }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         
         let ownBounds = self.bounds
         self.shapeLayer.bounds = ownBounds
+        self.tangentsLayer.bounds = ownBounds
         
         if let function = self.function {
-            var controlPoints: [CGPoint] = []
-            for i in 0..<4 {
-                let valuesArray = UnsafeMutablePointer<Float>.alloc(2)
-                function.getControlPointAtIndex(i, values: valuesArray)
-                let normalizedPoint = CGPoint(x: CGFloat(valuesArray[0]), y: CGFloat(1.0 - valuesArray[1]))
-                let denormalizedPoint = CGPoint(x: normalizedPoint.x * ownBounds.size.width, y: normalizedPoint.y * ownBounds.size.height)
-                controlPoints.append(denormalizedPoint)
+            let controlPoints = (0..<4).map { (index: Int) -> CGPoint in
+                let valuesArray = UnsafeMutablePointer<Float>.allocate(capacity: 2)
+                function.getControlPoint(at: index, values: valuesArray)
+
+                let normalizedPoint = CGPoint(x: CGFloat(valuesArray[0]),
+                                              y: CGFloat(1 - valuesArray[1]))
+                let denormalizedPoint = CGPoint(x: normalizedPoint.x * ownBounds.size.width,
+                                                y: normalizedPoint.y * ownBounds.size.height)
+
+                return denormalizedPoint
             }
             
             let curve = UIBezierPath()
-            curve.moveToPoint(controlPoints[0])
-            curve.addCurveToPoint(controlPoints[3], controlPoint1: controlPoints[1], controlPoint2: controlPoints[2])
-            self.shapeLayer.path = curve.CGPath
+            curve.move(to: controlPoints[0])
+            curve.addCurve(to: controlPoints[3], controlPoint1: controlPoints[1], controlPoint2: controlPoints[2])
+            self.shapeLayer.path = curve.cgPath
             
             let tangents = UIBezierPath()
-            tangents.moveToPoint(controlPoints[0])
-            tangents.addLineToPoint(controlPoints[1])
-            tangents.moveToPoint(controlPoints[3])
-            tangents.addLineToPoint(controlPoints[2])
-            self.tangentsLayer.path = tangents.CGPath
+            tangents.move(to: controlPoints[0])
+            tangents.addLine(to: controlPoints[1])
+            tangents.move(to: controlPoints[3])
+            tangents.addLine(to: controlPoints[2])
+            self.tangentsLayer.path = tangents.cgPath
         } else {
             self.shapeLayer.path = nil
             self.tangentsLayer.path = nil
         }
+    }
+
+    // MARK: - Private
+
+    private let shapeLayer: CAShapeLayer = {
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.fillColor = nil
+        shapeLayer.anchorPoint = CGPoint.zero
+        return shapeLayer
+    }()
+
+    private let tangentsLayer: CAShapeLayer = {
+        let tangentsLayer = CAShapeLayer()
+        tangentsLayer.fillColor = nil
+        tangentsLayer.anchorPoint = CGPoint.zero
+        tangentsLayer.lineDashPattern = [5, 2]
+        return tangentsLayer
+    }()
+
+    private func commonInit() {
+        self.shapeLayer.strokeColor = self.strokeColor.cgColor
+        self.layer.addSublayer(self.shapeLayer)
+
+        self.layer.addSublayer(self.tangentsLayer)
+        self.tangentsLayer.strokeColor = self.strokeColor.cgColor
     }
     
 }
